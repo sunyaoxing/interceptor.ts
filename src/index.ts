@@ -1,0 +1,1 @@
+export { useInterceptors, Interceptor, NextHandler } from './methodInterceptor'

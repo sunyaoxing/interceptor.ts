@@ -1,0 +1,21 @@
+{
+  "name": "interceptor.ts",
+  "version": "0.0.1",
+  "description": "A general interceptor implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf ./dist",
+    "compile": "tsc",
+    "build": "npm run clean; npm run compile"
+  },
+  "author": "Aleck Sun",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.13",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.2.2"
+  }
+}
