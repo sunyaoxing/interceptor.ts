@@ -3,7 +3,7 @@ A General Interceptor implementation for TS classes
 
 ## Define an interceptor
 
-```
+``` typescript
 import { Interceptor } from 'interceptor-ts'
 
 type HelloSignature = (target: string) => number;
@@ -19,7 +19,7 @@ class MyInterceptor implements Interceptor<HelloSignature> {
 
 
 ApplyInterceptor on a method
-```
+``` typescript
 import { useInterceptors } from 'interceptor-ts'
 
 class TestClass {
@@ -32,7 +32,7 @@ class TestClass {
 ```
 
 Now call the method
-```
+``` typescript
 const test = new TestClass();
 test.sayHello('James');
 ```
@@ -45,7 +45,7 @@ The output would be
 ```
 
 ## Repalace parameters in an interceptor
-```
+``` typescript
 import { Interceptor } from 'interceptor-ts'
 
 type HelloSignature = (target: string) => number;
@@ -60,7 +60,7 @@ class MyInterceptor implements Interceptor<HelloSignature> {
 ```
 
 Now call the method
-```
+``` typescript
 const test = new TestClass();
 test.sayHello('James');
 ```
