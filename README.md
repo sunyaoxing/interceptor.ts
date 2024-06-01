@@ -24,9 +24,9 @@ import { useInterceptors } from 'interceptor-ts'
 
 class TestClass {
     @useInterceptors([new MyInterceptor()])
-    sayHello(name: string): bool {
+    sayHello(name: string): number {
         console.log('Hello', name)
-        return true;
+        return 0;
     }
 }
 ```
