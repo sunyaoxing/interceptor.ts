@@ -1,13 +1,12 @@
 import 'reflect-metadata'
 
 export type AnyFunction = (...args: any[]) => any;
-export type NextHandler<T extends AnyFunction> = (() => ReturnType<T>) | T;
 
 
 export const INTERCEPTORS = Symbol('INTERCEPTORS');
 
 export interface Interceptor<T extends (...args: any[]) => any> {
-    intercept(next: NextHandler<T>, ...args: Parameters<T>): ReturnType<T>
+    intercept(next: AnyFunction, ...args: Parameters<T>): ReturnType<T>
 }
 
 export function useInterceptors<T extends AnyFunction>(interceptors: Interceptor<T> []) {
@@ -35,32 +34,41 @@ export function useInterceptors<T extends AnyFunction>(interceptors: Interceptor
 
 
 export function createInterceptorFuntion<T extends AnyFunction>(target: object, key: string, original: T): T {
+    let nextFunctions: T[] = [];
     return function (...args: Parameters<T>) {
+        if (nextFunctions.length) return nextFunctions[0](...args);
+
         const self = this;
         let interceptors: Interceptor<T>[] = [];
-        const interceptorMap = Reflect.getMetadata(INTERCEPTORS, target);
-        if (interceptorMap)
-            interceptors = interceptorMap[key] || [];
+        if (interceptors.length === 0) {
+            const interceptorMap = Reflect.getMetadata(INTERCEPTORS, target);
+            if (interceptorMap)
+                interceptors = interceptorMap[key] || [];
+        }
 
         //let index = 0;
         if (interceptors.length === 0)
             return original.apply(self, args);
 
+        function invokeOriginal(...nextArgs: [] | Parameters<T>) {
+            if (nextArgs.length === 0) nextArgs = args;
+            return original.apply(self, nextArgs);
+        }
+
         function next (index: number) {
-            return function (...nextArgs: Parameters<T>) {
+            if (nextFunctions[index]) return nextFunctions[index];
+            nextFunctions[index] = function (...nextArgs: Parameters<T>) {
                 if (nextArgs.length === 0) nextArgs = args;
                 const inteceptor = interceptors[index];
-                if (index < interceptors.length - 1)
-                    return inteceptor.intercept(next(index + 1) as any, ...nextArgs);
-                else {
-                     function invokeOriginal(...nextArgs: [] | Parameters<T>) {
-                        if (nextArgs.length === 0) nextArgs = args;
-                        return original.apply(self, nextArgs);
-                    }
+                if (index < interceptors.length - 1) {
+                    if (!nextFunctions[index + 1]) nextFunctions[index + 1] = next(index + 1);
+                    return inteceptor.intercept(nextFunctions[index + 1], ...nextArgs);
+                } else {
                     return inteceptor.intercept(invokeOriginal, ...nextArgs);
                 }
-            }
+            } as T
+            return nextFunctions[index];
         };
-        return next(0)(...args);
+        return next(0) as T;
     } as T;
 }

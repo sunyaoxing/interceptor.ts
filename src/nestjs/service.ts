@@ -10,25 +10,11 @@ type InterceptorClass<T extends AnyFunction> = {
 }
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class InterceptorLoader implements OnModuleInit {
+export class InterceptorLoader {
     constructor(
         @Inject(INQUIRER) private parentClass: object,
         @Inject(Reflector) private reflector: Reflector
     ) { }
-
-    onModuleInit() {
-        if (!this.parentClass) return;
-        const interceptorMap: any = {};
-        let interceptorDefMap = Reflect.getMetadata(INTERCEPTOR_DEFS, this.parentClass);
-        // Object.keys(interceptorDefMap).forEach(key => {
-        //     const interceptorClasses = interceptorDefMap[key];
-        //     interceptorClasses.forEach((interceptorClass: any) => {
-        //         const interceptor = this.moduleRef.get(interceptorClass);
-        //         interceptorMap[key] = interceptorMap[key] || [];
-        //         interceptorMap[key].push(interceptor);
-        //     });
-        // });
-    }
 
     initInterceptors(moduleRef: ModuleRef) {
         if (!this.parentClass) return;

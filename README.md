@@ -50,7 +50,7 @@ import { Interceptor } from 'interceptor-ts'
 
 type HelloSignature = (target: string) => number;
 class MyInterceptor implements Interceptor<HelloSignature> {
-    intercept(next: () => number, target: string): number {
+    intercept(next: (target: string) => number, target: string): number {
         console.log('before');
         const result = next('Mr Bond');
         console.log('after');

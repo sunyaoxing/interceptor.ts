@@ -1,6 +1,6 @@
 import { Inject, Injectable, Module, OnModuleInit, Scope } from '@nestjs/common';
 import { InterceptorLoader, useInterceptors, NestInterceptorModule } from '../src/nestjs'
-import { Interceptor, NextHandler } from '../src/methodInterceptor';
+import { AnyFunction, Interceptor } from '../src/methodInterceptor';
 import { ModuleRef, NestFactory } from '@nestjs/core';
 
 
@@ -10,6 +10,16 @@ class MyInterceptor implements Interceptor<(name: string) => number> {
         console.log('before');
         const result = next(`Mr. ${name}`);
         console.log('end');
+        return result;
+    }
+}
+
+@Injectable()
+class MyInterceptor2 implements Interceptor<(name: string) => number> {
+    intercept(next: Function, name: string): number {
+        console.log('before 2');
+        const result = next();
+        console.log('end 2');
         return result;
     }
 }
@@ -30,7 +40,7 @@ class DemoService implements OnModuleInit {
     }
 
     // use interceptor om the function
-    @useInterceptors([MyInterceptor])
+    @useInterceptors([MyInterceptor, MyInterceptor2])
     sayHello(name: string): number {
         console.log(`Hello ${name}!`);
         return 0;
@@ -39,7 +49,7 @@ class DemoService implements OnModuleInit {
 
 @Module({
     imports: [NestInterceptorModule], // import the interceptor module
-    providers: [DemoService, MyInterceptor]
+    providers: [DemoService, MyInterceptor, MyInterceptor2]
 })
 class AppModule{}
 

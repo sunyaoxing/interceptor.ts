@@ -1,1 +1,1 @@
-export { useInterceptors, Interceptor, NextHandler } from './methodInterceptor'
+export { useInterceptors, Interceptor } from './methodInterceptor'
