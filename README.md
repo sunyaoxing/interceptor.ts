@@ -1,8 +1,9 @@
 # interceptor.ts
 A General Interceptor implementation for TS classes
 
-## Define an interceptor
+## Use in general case
 
+### Define an interceptor
 ``` typescript
 import { Interceptor } from 'interceptor-ts'
 
@@ -18,7 +19,7 @@ class MyInterceptor implements Interceptor<HelloSignature> {
 ```
 
 
-ApplyInterceptor on a method
+### ApplyInterceptor on a method
 ``` typescript
 import { useInterceptors } from 'interceptor-ts'
 
@@ -31,20 +32,22 @@ class TestClass {
 }
 ```
 
-Now call the method
+### Now call the method
 ``` typescript
 const test = new TestClass();
 test.sayHello('James');
 ```
 
-The output would be
+### The output would be
 ```
 [LOG]: "before" 
 [LOG]: "Hello, James" 
 [LOG]: "after" 
 ```
 
+<br/><br/>
 ## Repalace parameters in an interceptor
+### Define interceptor
 ``` typescript
 import { Interceptor } from 'interceptor-ts'
 
@@ -59,20 +62,21 @@ class MyInterceptor implements Interceptor<HelloSignature> {
 }
 ```
 
-Now call the method
+### Now call the method
 ``` typescript
 const test = new TestClass();
 test.sayHello('James');
 ```
 
-The output would be
+### The output would be
 ```
 [LOG]: "before" 
 [LOG]: "Hello, Mr Bond" 
 [LOG]: "after" 
 ```
 
-## use the interceptor in a Nest.js application
+<br/><br/>
+## Use the interceptor in a Nest.js application
 
 You need to import the interceptor module into your module
 
