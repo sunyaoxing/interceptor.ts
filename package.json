@@ -12,8 +12,8 @@
     "clean": "rm -rf ./dist",
     "compile": "tsc",
     "build": "npm run clean; npm run compile",
-
-    "build:demo": "npm run clean; tsc -p tsconfig-demo.json"
+    "build:demo": "npm run clean; tsc -p tsconfig-demo.json",
+    "build:package": "npm run build; rm -rf ./npm_package; ./bin/build-package.sh npm_package"
   },
   "author": "Aleck Sun",
   "license": "MIT",
