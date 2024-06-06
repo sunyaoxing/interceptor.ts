@@ -1,12 +1,8 @@
 {
   "name": "interceptor.ts",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A general interceptor implementation",
-  "main": "./dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./nestjs": "./dist/nestjs/index.js"
-  },
+  "main": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf ./dist",
