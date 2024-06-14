@@ -66,9 +66,9 @@ export function createInterceptorFuntion<T extends AnyFunction>(target: object, 
                 } else {
                     return inteceptor.intercept(invokeOriginal, ...nextArgs);
                 }
-            } as T
+            } as T;
             return nextFunctions[index];
         };
-        return next(0) as T;
+        return next(0)(...args);
     } as T;
 }
